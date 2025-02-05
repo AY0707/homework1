@@ -1,0 +1,17 @@
+options=optimoptions('fmincon','Algorithm','sqp');
+t0=[2,2];
+lb=[1,1];
+ub=[3,3];
+[t_opt,U_neg_opt]=fmincon(@g,t0,[],[],[],[],lb,ub,[],options);
+U_opt=-U_neg_opt;
+fprintf('最优 t1:%.4f, 最优 t2:%.4f\n',t_opt(1), t_opt(2));
+fprintf('最大内能 U: %.4f\n',U_opt);
+[t1_grid,t2_grid]=meshgrid(1:0.1:3,1:0.1:3);
+U_grid=arrayfun(@(t1,t2)-g([t1,t2]),t1_grid,t2_grid);
+figure;
+surf(t1_grid,t2_grid,U_grid);
+xlabel('t1');
+ylabel('t2');
+zlabel('U');
+title('内能U关于t1和t2的变化');
+colorbar;
